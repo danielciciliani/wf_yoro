@@ -1,4 +1,4 @@
-console.log('yoro project local');
+console.log('yoro project from local, dani');
 
 document.addEventListener("DOMContentLoaded", () => {
     
@@ -26,5 +26,6 @@ function moveBackArrow () {
 
     backArrow.addEventListener("click", () => {
         sidebar.classList.toggle('compact');
+        backArrow.classList.toggle('rotated');
     });
 }
