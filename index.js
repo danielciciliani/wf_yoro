@@ -101,3 +101,19 @@ $(".slider_component").each(function (index) {
     },
   });
 });
+
+//hero mask animation
+gsap.registerPlugin(ScrollTrigger);
+
+gsap.to(".hero-mask", {
+  width: "400%",
+  height: "112vw",
+  ease: "power2.out",
+  scrollTrigger: {
+    trigger: ".section_hero",
+    start: "top top",
+    //end: "bottom top",
+    end: "150% top",
+    scrub: true,
+  },
+});
