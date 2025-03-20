@@ -117,3 +117,19 @@ gsap.to(".hero-mask", {
     scrub: true,
   },
 });
+
+// logo top bar animation
+gsap.fromTo(
+  ".topbar_logo_link",
+  { scale: 0 },
+  {
+    scale: 1,
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".section_main",
+      start: "top bottom", // [trigger] [scroller]
+      end: "120px top", // [trigger] [scroller]
+      scrub: true,
+    },
+  }
+);
