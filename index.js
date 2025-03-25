@@ -69,6 +69,32 @@ function moveBackArrow() {
   });
 }
 
+$(".slider_component.is-founding").each(function (index) {
+    const swiper = new Swiper($(this).find(".swiper")[0], {
+      slidesPerView: 1,
+      spaceBetween: 0,
+      speed: 800,
+      centerInsufficientSlides: true,
+      loop: true,
+      autoplay: {
+        delay: 6000,
+        disableOnInteraction: false,
+      },
+      navigation: {
+        nextEl: $(this).find(".swiper-next")[0],
+        prevEl: $(this).find(".swiper-prev")[0],
+      },
+      pagination: {
+        el: $(this).find(".swiper-pagination")[0],
+        type: "bullets",
+        bulletClass: "swiper-bullet",
+        bulletActiveClass: "is-active",
+        bulletElement: "button",
+        clickable: true,
+      },
+    });
+  });
+
 ///////// DANIELE
 $(".slider_component").each(function (index) {
   const swiper = new Swiper($(this).find(".swiper")[0], {
