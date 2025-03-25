@@ -2,7 +2,7 @@ console.log("yoro project from local, dani");
 
 document.addEventListener("DOMContentLoaded", () => {
   addActiveClass();
-  moveBackArrow();
+  hideAndShowSidebar();
 });
 
 let isUserClick = false;
@@ -59,13 +59,26 @@ function addActiveClass() {
   sections.forEach((section) => observer.observe(section));
 }
 
-function moveBackArrow() {
+function hideAndShowSidebar() {
   let backArrow = document.getElementById("back-arrow");
   let sidebar = document.getElementById("sidebar");
+  let expandArrow = document.getElementById('expand-arrow');
+
+  if (!sidebar.classList.contains('compact')) {
+    expandArrow.classList.remove('show');
+  }
 
   backArrow.addEventListener("click", () => {
     sidebar.classList.toggle("compact");
-    backArrow.classList.toggle("rotated");
+
+    setTimeout(() => {
+      expandArrow.classList.add('show');
+    }, 300);
+  });
+
+  expandArrow.addEventListener("click", () => {
+    expandArrow.classList.remove("show");
+    sidebar.classList.remove("compact");
   });
 }
 
