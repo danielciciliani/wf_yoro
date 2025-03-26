@@ -1,4 +1,4 @@
-console.log("yoro project from local, dani");
+console.log("yoro project from index");
 
 document.addEventListener("DOMContentLoaded", () => {
   addActiveClass();
@@ -114,63 +114,109 @@ $(".slider_component.is-founding").each(function (index) {
     });
   });
 
+
 function magnetButton() {
   const magnetElements = document.querySelectorAll('.magnet');
-  const magnetArea = 250; // Radio del área magnética en píxeles
   
-  // Configuración inicial para todos los elementos
+  const config = {
+    area: 200,               // Radio del área magnética
+    moveStrength: 0.5,       // Intensidad del movimiento
+    tiltIntensity: 20,       // Intensidad de inclinación 3D
+    hoverScale: 1.05,        // Escala al interactuar
+    normalScale: 1,          // Escala normal
+    hoverOpacity: 1.1,         // Opacidad al interactuar
+    normalOpacity: 1,      // Opacidad normal
+    hoverShadow: '0 0 10px 5px rgba(0, 0, 0, 0.15)', // Sombra al interactuar
+    normalShadow: '0 0 10px 2px rgba(0, 0, 0, 0.1)',   // Sombra normal
+    inDuration: 0.3,         // Duración entrada
+    outDuration: 0.5,        // Duración salida
+    perspective: 500         // Perspectiva 3D
+  };
+
   magnetElements.forEach(element => {
     gsap.set(element, { 
       transformOrigin: "center center",
       x: 0,
       y: 0,
       rotationX: 0,
-      rotationY: 0
+      rotationY: 0,
+      scale: config.normalScale,
+      opacity: config.normalOpacity,
+      boxShadow: config.normalShadow
     });
+
+    // Guardar datos de posición
+    element._magnetData = {
+      update: () => {
+        const rect = element.getBoundingClientRect();
+        return {
+          rect,
+          center: {
+            x: rect.left + rect.width / 2,
+            y: rect.top + rect.height / 2
+          }
+        };
+      }
+    };
   });
 
-  document.addEventListener('mousemove', (e) => {
+  // Función de throttling para mejor rendimiento
+  const throttle = (fn, delay) => {
+    let lastTime = 0;
+    return (...args) => {
+      const now = new Date().getTime();
+      if (now - lastTime < delay) return;
+      lastTime = now;
+      fn(...args);
+    };
+  };
+
+  // Handle efecto magnético
+  const handleMagnetMove = throttle((e) => {
     magnetElements.forEach(element => {
-      const elementRect = element.getBoundingClientRect();
-      const elementCenter = {
-        x: elementRect.left + elementRect.width / 2,
-        y: elementRect.top + elementRect.height / 2
-      };
+      const { rect, center } = element._magnetData.update();
+      const x = e.clientX - center.x;
+      const y = e.clientY - center.y;
+      const distance = Math.sqrt(x * x + y * y);
       
-      const distance = Math.sqrt(
-        Math.pow(e.clientX - elementCenter.x, 2) + 
-        Math.pow(e.clientY - elementCenter.y, 2)
-      );
-      
-      if (distance < magnetArea) {
-        const x = e.clientX - elementCenter.x;
-        const y = e.clientY - elementCenter.y;
-        
-        const strength = 1 - (distance / magnetArea); 
-        const tiltIntensity = 20;
+      if (distance < config.area) {
+        const strength = 1 - (distance / config.area);
         
         gsap.to(element, {
-          x: x * 0.5 * strength,
-          y: y * 0.5 * strength,
-          rotationX: (y / elementRect.height) * tiltIntensity * strength,
-          rotationY: -(x / elementRect.width) * tiltIntensity * strength,
-          transformPerspective: 500,
-          duration: 0.3,
+          x: x * config.moveStrength * strength,
+          y: y * config.moveStrength * strength,
+          rotationX: (y / rect.height) * config.tiltIntensity * strength,
+          rotationY: -(x / rect.width) * config.tiltIntensity * strength,
+          scale: config.hoverScale,
+          opacity: config.hoverOpacity,
+          boxShadow: config.hoverShadow,
+          transformPerspective: config.perspective,
+          duration: config.inDuration,
           ease: 'power2.out'
         });
-      } else {
+      } else if (!gsap.isTweening(element)) {
         gsap.to(element, {
           x: 0,
           y: 0,
           rotationX: 0,
           rotationY: 0,
-          duration: 0.5,
-          ease: 'elastic.out(1, 0.5)'
+          scale: config.normalScale,
+          opacity: config.normalOpacity,
+          boxShadow: config.normalShadow,
+          duration: config.outDuration,
+          ease: 'elastic.out(1, 0.3)'
         });
       }
     });
+  }, 16); 
+
+  document.addEventListener('mousemove', handleMagnetMove);
+  
+  window.addEventListener('resize', () => {
+    magnetElements.forEach(el => el._magnetData.update());
   });
 }
+
 
 
 ///////// DANIELE
