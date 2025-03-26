@@ -3,6 +3,7 @@ console.log("yoro project from local, dani");
 document.addEventListener("DOMContentLoaded", () => {
   addActiveClass();
   hideAndShowSidebar();
+  magnetButton();
 });
 
 let isUserClick = false;
@@ -61,7 +62,7 @@ function addActiveClass() {
 
 function hideAndShowSidebar() {
   let backArrow = document.getElementById("back-arrow");
-  let sidebar = document.getElementById("sidebar");
+  let sidebar = document.getElementById("sidebar_container");
   let expandArrow = document.getElementById('expand-arrow');
 
   if (!sidebar.classList.contains('compact')) {
@@ -89,9 +90,14 @@ $(".slider_component.is-founding").each(function (index) {
       speed: 800,
       centerInsufficientSlides: true,
       loop: true,
+      loopAdditionalSlides: 5,
       autoplay: {
         delay: 6000,
         disableOnInteraction: false,
+      },
+      lazy: {
+        loadPrevNext: true,
+        loadPrevNextAmount: 2
       },
       navigation: {
         nextEl: $(this).find(".swiper-next")[0],
@@ -107,6 +113,65 @@ $(".slider_component.is-founding").each(function (index) {
       },
     });
   });
+
+function magnetButton() {
+  const magnetElements = document.querySelectorAll('.magnet');
+  const magnetArea = 250; // Radio del área magnética en píxeles
+  
+  // Configuración inicial para todos los elementos
+  magnetElements.forEach(element => {
+    gsap.set(element, { 
+      transformOrigin: "center center",
+      x: 0,
+      y: 0,
+      rotationX: 0,
+      rotationY: 0
+    });
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    magnetElements.forEach(element => {
+      const elementRect = element.getBoundingClientRect();
+      const elementCenter = {
+        x: elementRect.left + elementRect.width / 2,
+        y: elementRect.top + elementRect.height / 2
+      };
+      
+      const distance = Math.sqrt(
+        Math.pow(e.clientX - elementCenter.x, 2) + 
+        Math.pow(e.clientY - elementCenter.y, 2)
+      );
+      
+      if (distance < magnetArea) {
+        const x = e.clientX - elementCenter.x;
+        const y = e.clientY - elementCenter.y;
+        
+        const strength = 1 - (distance / magnetArea); 
+        const tiltIntensity = 20;
+        
+        gsap.to(element, {
+          x: x * 0.5 * strength,
+          y: y * 0.5 * strength,
+          rotationX: (y / elementRect.height) * tiltIntensity * strength,
+          rotationY: -(x / elementRect.width) * tiltIntensity * strength,
+          transformPerspective: 500,
+          duration: 0.3,
+          ease: 'power2.out'
+        });
+      } else {
+        gsap.to(element, {
+          x: 0,
+          y: 0,
+          rotationX: 0,
+          rotationY: 0,
+          duration: 0.5,
+          ease: 'elastic.out(1, 0.5)'
+        });
+      }
+    });
+  });
+}
+
 
 ///////// DANIELE
 $(".slider_component").each(function (index) {
