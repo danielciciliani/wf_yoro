@@ -1,8 +1,8 @@
 console.log("yoro project from index");
 
 document.addEventListener("DOMContentLoaded", () => {
+  manageSidebar();
   addActiveClass();
-  hideAndShowSidebar();
   magnetButton();
 });
 
@@ -11,6 +11,7 @@ let isUserClick = false;
 function addActiveClass() {
   let menuItems = document.querySelectorAll(".sidebar_list li");
   let sections = document.querySelectorAll("section");
+  
 
   menuItems.forEach((item) => {
     item.addEventListener("click", (e) => {
@@ -60,28 +61,6 @@ function addActiveClass() {
   sections.forEach((section) => observer.observe(section));
 }
 
-function hideAndShowSidebar() {
-  let backArrow = document.getElementById("back-arrow");
-  let sidebar = document.getElementById("sidebar_container");
-  let expandArrow = document.getElementById('expand-arrow');
-
-  if (!sidebar.classList.contains('compact')) {
-    expandArrow.classList.remove('show');
-  }
-
-  backArrow.addEventListener("click", () => {
-    sidebar.classList.toggle("compact");
-
-    setTimeout(() => {
-      expandArrow.classList.add('show');
-    }, 300);
-  });
-
-  expandArrow.addEventListener("click", () => {
-    expandArrow.classList.remove("show");
-    sidebar.classList.remove("compact");
-  });
-}
 
 function magnetButton() {
   const magnetElements = document.querySelectorAll('.magnet');
@@ -94,8 +73,8 @@ function magnetButton() {
     normalScale: 1,          // Escala normal
     hoverOpacity: 1.1,         // Opacidad al interactuar
     normalOpacity: 1,      // Opacidad normal
-    hoverShadow: '0 0 10px 5px rgba(0, 0, 0, 0.15)', // Sombra al interactuar
-    normalShadow: '0 0 10px 2px rgba(0, 0, 0, 0.1)',   // Sombra normal
+    // hoverShadow: '0 0 10px 5px rgba(0, 0, 0, 0.15)', // Sombra al interactuar
+    // normalShadow: '0 0 10px 2px rgba(0, 0, 0, 0.1)',   // Sombra normal
     inDuration: 0.3,         // Duración entrada
     outDuration: 0.5,        // Duración salida
     perspective: 500         // Perspectiva 3D
@@ -184,6 +163,90 @@ function magnetButton() {
     magnetElements.forEach(el => el._magnetData.update());
   });
 }
+
+function manageSidebar() {
+  const sidebar = document.querySelector('.sidebar_container');
+  const topbarLogoLink = document.querySelector('.topbar_logo_link');
+  const backArrow = document.getElementById('back-arrow');
+  const expandArrow = document.getElementById('expand-arrow');
+  const sidebarLogoMobile = document.querySelector('.sidebar_logo-mobile');
+
+  function checkViewport() {
+    const isMobile = window.innerWidth <= 768;
+    
+    if (isMobile) {
+      sidebar.classList.add('compact');
+      if (sidebarLogoMobile) {
+        sidebarLogoMobile.classList.add('active');
+        sidebar.style.zIndex = '1100';
+      } 
+    } else {
+      sidebar.classList.remove('compact');
+      if (expandArrow) expandArrow.classList.remove('show');
+      if (sidebarLogoMobile) sidebarLogoMobile.classList.remove('active');
+    }
+  }
+
+  function handleLogoClick() {
+    if (!topbarLogoLink) return;
+    
+    topbarLogoLink.addEventListener('click', (e) => {
+      e.preventDefault();
+      sidebar.classList.toggle('compact');
+      if (expandArrow) {
+        expandArrow.classList.toggle('show', !sidebar.classList.contains('compact'));
+      }
+    });
+  }
+
+    function handleSidebarLogoClick() {
+      if (!sidebarLogoMobile) return;
+      
+      sidebarLogoMobile.addEventListener('click', (e) => {
+        if (window.innerWidth <= 768 && sidebarLogoMobile.classList.contains('active')) {
+          e.preventDefault();
+          sidebar.classList.add('compact'); 
+          if (expandArrow) expandArrow.classList.add('show');
+        }
+      });
+    }
+
+
+  function handleArrows() {
+    if (!backArrow || !expandArrow) return;
+    
+    backArrow.addEventListener('click', () => {
+      sidebar.classList.add('compact');
+      setTimeout(() => {
+        expandArrow.classList.add('show');
+      }, 300);
+    });
+
+    expandArrow.addEventListener('click', () => {
+      expandArrow.classList.remove('show');
+      sidebar.classList.remove('compact');
+    });
+  }
+
+  function init() {
+    checkViewport();
+    handleLogoClick();
+    handleSidebarLogoClick();
+    handleArrows();
+    
+    if (expandArrow) {
+      expandArrow.classList.toggle('show', sidebar.classList.contains('compact'));
+    }
+  }
+
+  window.addEventListener('load', init);
+  window.addEventListener('resize', checkViewport);
+}
+
+
+
+
+
 
 
 ///////// DANIELE
