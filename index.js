@@ -11,7 +11,6 @@ let isUserClick = false;
 function addActiveClass() {
   let menuItems = document.querySelectorAll(".sidebar_list li");
   let sections = document.querySelectorAll("section");
-  
 
   menuItems.forEach((item) => {
     item.addEventListener("click", (e) => {
@@ -61,27 +60,26 @@ function addActiveClass() {
   sections.forEach((section) => observer.observe(section));
 }
 
-
 function magnetButton() {
-  const magnetElements = document.querySelectorAll('.magnet');
-  
+  const magnetElements = document.querySelectorAll(".magnet");
+
   const config = {
-    area: 200,               // Radio del área magnética
-    moveStrength: 0.5,       // Intensidad del movimiento
-    tiltIntensity: 20,       // Intensidad de inclinación 3D
-    hoverScale: 1.05,        // Escala al interactuar
-    normalScale: 1,          // Escala normal
-    hoverOpacity: 1.1,         // Opacidad al interactuar
-    normalOpacity: 1,      // Opacidad normal
+    area: 200, // Radio del área magnética
+    moveStrength: 0.5, // Intensidad del movimiento
+    tiltIntensity: 20, // Intensidad de inclinación 3D
+    hoverScale: 1.05, // Escala al interactuar
+    normalScale: 1, // Escala normal
+    hoverOpacity: 1.1, // Opacidad al interactuar
+    normalOpacity: 1, // Opacidad normal
     // hoverShadow: '0 0 10px 5px rgba(0, 0, 0, 0.15)', // Sombra al interactuar
     // normalShadow: '0 0 10px 2px rgba(0, 0, 0, 0.1)',   // Sombra normal
-    inDuration: 0.3,         // Duración entrada
-    outDuration: 0.5,        // Duración salida
-    perspective: 500         // Perspectiva 3D
+    inDuration: 0.3, // Duración entrada
+    outDuration: 0.5, // Duración salida
+    perspective: 500, // Perspectiva 3D
   };
 
-  magnetElements.forEach(element => {
-    gsap.set(element, { 
+  magnetElements.forEach((element) => {
+    gsap.set(element, {
       transformOrigin: "center center",
       x: 0,
       y: 0,
@@ -89,7 +87,7 @@ function magnetButton() {
       rotationY: 0,
       scale: config.normalScale,
       opacity: config.normalOpacity,
-      boxShadow: config.normalShadow
+      boxShadow: config.normalShadow,
     });
 
     // Guardar datos de posición
@@ -100,10 +98,10 @@ function magnetButton() {
           rect,
           center: {
             x: rect.left + rect.width / 2,
-            y: rect.top + rect.height / 2
-          }
+            y: rect.top + rect.height / 2,
+          },
         };
-      }
+      },
     };
   });
 
@@ -120,15 +118,15 @@ function magnetButton() {
 
   // Handle efecto magnético
   const handleMagnetMove = throttle((e) => {
-    magnetElements.forEach(element => {
+    magnetElements.forEach((element) => {
       const { rect, center } = element._magnetData.update();
       const x = e.clientX - center.x;
       const y = e.clientY - center.y;
       const distance = Math.sqrt(x * x + y * y);
-      
+
       if (distance < config.area) {
-        const strength = 1 - (distance / config.area);
-        
+        const strength = 1 - distance / config.area;
+
         gsap.to(element, {
           x: x * config.moveStrength * strength,
           y: y * config.moveStrength * strength,
@@ -139,7 +137,7 @@ function magnetButton() {
           boxShadow: config.hoverShadow,
           transformPerspective: config.perspective,
           duration: config.inDuration,
-          ease: 'power2.out'
+          ease: "power2.out",
         });
       } else if (!gsap.isTweening(element)) {
         gsap.to(element, {
@@ -151,80 +149,85 @@ function magnetButton() {
           opacity: config.normalOpacity,
           boxShadow: config.normalShadow,
           duration: config.outDuration,
-          ease: 'elastic.out(1, 0.3)'
+          ease: "elastic.out(1, 0.3)",
         });
       }
     });
-  }, 16); 
+  }, 16);
 
-  document.addEventListener('mousemove', handleMagnetMove);
-  
-  window.addEventListener('resize', () => {
-    magnetElements.forEach(el => el._magnetData.update());
+  document.addEventListener("mousemove", handleMagnetMove);
+
+  window.addEventListener("resize", () => {
+    magnetElements.forEach((el) => el._magnetData.update());
   });
 }
 
 function manageSidebar() {
-  const sidebar = document.querySelector('.sidebar_container');
-  const topbarLogoLink = document.querySelector('.topbar_logo_link');
-  const backArrow = document.getElementById('back-arrow');
-  const expandArrow = document.getElementById('expand-arrow');
-  const sidebarLogoMobile = document.querySelector('.sidebar_logo-mobile');
+  const sidebar = document.querySelector(".sidebar_container");
+  const topbarLogoLink = document.querySelector(".topbar_logo_link");
+  const backArrow = document.getElementById("back-arrow");
+  const expandArrow = document.getElementById("expand-arrow");
+  const sidebarLogoMobile = document.querySelector(".sidebar_logo-mobile");
 
   function checkViewport() {
     const isMobile = window.innerWidth <= 768;
-    
+
     if (isMobile) {
-      sidebar.classList.add('compact');
+      sidebar.classList.add("compact");
       if (sidebarLogoMobile) {
-        sidebarLogoMobile.classList.add('active');
-        sidebar.style.zIndex = '1100';
-      } 
+        sidebarLogoMobile.classList.add("active");
+        sidebar.style.zIndex = "1100";
+      }
     } else {
-      sidebar.classList.remove('compact');
-      if (expandArrow) expandArrow.classList.remove('show');
-      if (sidebarLogoMobile) sidebarLogoMobile.classList.remove('active');
+      sidebar.classList.remove("compact");
+      if (expandArrow) expandArrow.classList.remove("show");
+      if (sidebarLogoMobile) sidebarLogoMobile.classList.remove("active");
     }
   }
 
   function handleLogoClick() {
     if (!topbarLogoLink) return;
-    
-    topbarLogoLink.addEventListener('click', (e) => {
+
+    topbarLogoLink.addEventListener("click", (e) => {
       e.preventDefault();
-      sidebar.classList.toggle('compact');
+      sidebar.classList.toggle("compact");
       if (expandArrow) {
-        expandArrow.classList.toggle('show', !sidebar.classList.contains('compact'));
+        expandArrow.classList.toggle(
+          "show",
+          !sidebar.classList.contains("compact")
+        );
       }
     });
   }
 
-    function handleSidebarLogoClick() {
-      if (!sidebarLogoMobile) return;
-      
-      sidebarLogoMobile.addEventListener('click', (e) => {
-        if (window.innerWidth <= 768 && sidebarLogoMobile.classList.contains('active')) {
-          e.preventDefault();
-          sidebar.classList.add('compact'); 
-          if (expandArrow) expandArrow.classList.add('show');
-        }
-      });
-    }
+  function handleSidebarLogoClick() {
+    if (!sidebarLogoMobile) return;
 
+    sidebarLogoMobile.addEventListener("click", (e) => {
+      if (
+        window.innerWidth <= 768 &&
+        sidebarLogoMobile.classList.contains("active")
+      ) {
+        e.preventDefault();
+        sidebar.classList.add("compact");
+        if (expandArrow) expandArrow.classList.add("show");
+      }
+    });
+  }
 
   function handleArrows() {
     if (!backArrow || !expandArrow) return;
-    
-    backArrow.addEventListener('click', () => {
-      sidebar.classList.add('compact');
+
+    backArrow.addEventListener("click", () => {
+      sidebar.classList.add("compact");
       setTimeout(() => {
-        expandArrow.classList.add('show');
+        expandArrow.classList.add("show");
       }, 300);
     });
 
-    expandArrow.addEventListener('click', () => {
-      expandArrow.classList.remove('show');
-      sidebar.classList.remove('compact');
+    expandArrow.addEventListener("click", () => {
+      expandArrow.classList.remove("show");
+      sidebar.classList.remove("compact");
     });
   }
 
@@ -233,21 +236,18 @@ function manageSidebar() {
     handleLogoClick();
     handleSidebarLogoClick();
     handleArrows();
-    
+
     if (expandArrow) {
-      expandArrow.classList.toggle('show', sidebar.classList.contains('compact'));
+      expandArrow.classList.toggle(
+        "show",
+        sidebar.classList.contains("compact")
+      );
     }
   }
 
-  window.addEventListener('load', init);
-  window.addEventListener('resize', checkViewport);
+  window.addEventListener("load", init);
+  window.addEventListener("resize", checkViewport);
 }
-
-
-
-
-
-
 
 ///////// DANIELE
 $(".slider_component").each(function (index) {
@@ -313,3 +313,42 @@ gsap.fromTo(
     },
   }
 );
+
+////// SPLIT TYPE Words animation
+
+////////// Text animation on scroll
+
+// Split text into spans
+///////// SCROLLTRIGGER ANIMATION
+gsap.registerPlugin(ScrollTrigger);
+
+// Link timelines to scroll position
+function createScrollTrigger(triggerElement, timeline) {
+  // Reset tl when scroll out of view past bottom of screen
+  ScrollTrigger.create({
+    trigger: triggerElement,
+    start: "top bottom",
+    onLeaveBack: () => {
+      timeline.progress(0);
+      timeline.pause();
+    },
+  });
+  // Play tl when scrolled into view (60% from top of screen)
+  ScrollTrigger.create({
+    trigger: triggerElement,
+    start: "top 70%",
+    onEnter: () => timeline.play(),
+  });
+}
+
+$("[animate]").each(function (index) {
+  let tl = gsap.timeline({ paused: true });
+  tl.to($(this).children(), {
+    opacity: 1,
+    y: 0,
+    duration: 1.4,
+    ease: "power2.out",
+    stagger: { amount: 0.3 },
+  });
+  createScrollTrigger($(this), tl);
+});
