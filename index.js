@@ -259,6 +259,10 @@ $(".slider_component").each(function (index) {
     speed: 800,
     centerInsufficientSlides: true,
     loop: true,
+    effect: "fade",
+    fadeEffect: {
+      crossFade: true,
+    },
     autoplay: {
       delay: 6000,
       disableOnInteraction: false,
@@ -286,8 +290,9 @@ $(".slider_component").each(function (index) {
 gsap.registerPlugin(ScrollTrigger);
 
 gsap.to(".hero-mask", {
-  width: "400%",
-  height: "112vw",
+  //width: "800%",
+  //height: "224vw",
+  scale: 8,
   ease: "power2.out",
   scrollTrigger: {
     trigger: ".section_hero",
@@ -298,25 +303,21 @@ gsap.to(".hero-mask", {
   },
 });
 
-// logo top bar animation
-gsap.fromTo(
-  ".topbar_logo_link",
-  { scale: 0 },
-  {
-    scale: 1,
-    ease: "power2.out",
-    scrollTrigger: {
-      trigger: ".section_main",
-      start: "top bottom", // [trigger] [scroller]
-      end: "120px top", // [trigger] [scroller]
-      scrub: true,
-    },
-  }
-);
-
-////// SPLIT TYPE Words animation
-
-////////// Text animation on scroll
+// // logo top bar animation
+// gsap.fromTo(
+//   ".topbar_logo_link",
+//   { scale: 0 },
+//   {
+//     scale: 1,
+//     ease: "power2.out",
+//     scrollTrigger: {
+//       trigger: ".section_main",
+//       start: "top bottom", // [trigger] [scroller]
+//       end: "120px top", // [trigger] [scroller]
+//       scrub: true,
+//     },
+//   }
+// );
 
 // Split text into spans
 ///////// SCROLLTRIGGER ANIMATION
