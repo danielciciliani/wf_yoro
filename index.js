@@ -290,9 +290,9 @@ $(".slider_component").each(function (index) {
 gsap.registerPlugin(ScrollTrigger);
 
 gsap.to(".hero-mask", {
-  //width: "800%",
-  //height: "224vw",
-  scale: 8,
+  width: "1600%",
+  height: "448vw",
+  //scale: 8,
   ease: "power2.out",
   scrollTrigger: {
     trigger: ".section_hero",
