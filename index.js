@@ -286,12 +286,41 @@ $(".slider_component").each(function (index) {
   });
 });
 
+// var teamSwiper = new Swiper(".slider_component_team", {
+//   slidesPerView: 3,
+//   spaceBetween: 30,
+//   pagination: {
+//     el: ".swiper-pagination",
+//     clickable: true,
+//   },
+// });
+
+$(".team_slider_component").each(function (index) {
+  const teamSwiper = new Swiper($(this).find(".swiper")[0], {
+    slidesPerView: 3,
+    spaceBetween: 16,
+    speed: 800,
+    loop: true,
+    allowTouchMove: true, // Optional, for touch devices
+    //effect: "fade",
+    fadeEffect: {
+      crossFade: true,
+    },
+    navigation: {
+      nextEl: $(this).find(".swiper-next")[0],
+      prevEl: $(this).find(".swiper-prev")[0],
+    },
+  });
+});
+
 //hero mask animation
 gsap.registerPlugin(ScrollTrigger);
 
 gsap.to(".hero-mask", {
   width: "1600%",
   height: "448vw",
+  marginLeft: "448vw",
+  //x: "1%",
   //scale: 8,
   ease: "power2.out",
   scrollTrigger: {
