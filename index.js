@@ -286,15 +286,6 @@ $(".slider_component").each(function (index) {
   });
 });
 
-// var teamSwiper = new Swiper(".slider_component_team", {
-//   slidesPerView: 3,
-//   spaceBetween: 30,
-//   pagination: {
-//     el: ".swiper-pagination",
-//     clickable: true,
-//   },
-// });
-
 $(".team_slider_component").each(function (index) {
   const teamSwiper = new Swiper($(this).find(".swiper")[0], {
     slidesPerView: 3,
@@ -332,22 +323,6 @@ gsap.to(".hero-mask", {
   },
 });
 
-// // logo top bar animation
-// gsap.fromTo(
-//   ".topbar_logo_link",
-//   { scale: 0 },
-//   {
-//     scale: 1,
-//     ease: "power2.out",
-//     scrollTrigger: {
-//       trigger: ".section_main",
-//       start: "top bottom", // [trigger] [scroller]
-//       end: "120px top", // [trigger] [scroller]
-//       scrub: true,
-//     },
-//   }
-// );
-
 // Split text into spans
 ///////// SCROLLTRIGGER ANIMATION
 gsap.registerPlugin(ScrollTrigger);
@@ -381,4 +356,38 @@ $("[animate]").each(function (index) {
     stagger: { amount: 0.3 },
   });
   createScrollTrigger($(this), tl);
+});
+
+//Audio autoplay and button control
+window.addEventListener("DOMContentLoaded", () => {
+  const audio = document.getElementById("audio");
+  const audioButton = document.querySelector(".audio-button");
+
+  // Try to play audio on page load (may require user interaction due to browser policies)
+  const playAudio = () => {
+    audio.play().catch((error) => {
+      console.warn("Autoplay failed:", error);
+    });
+  };
+
+  playAudio();
+
+  audioButton.addEventListener("click", () => {
+    if (audio.paused) {
+      audio.play();
+      audioButton.classList.remove("off");
+    } else {
+      audio.pause();
+      audioButton.classList.add("off");
+    }
+  });
+
+  // Optional: Update button state if autoplay fails
+  audio.addEventListener("pause", () => {
+    audioButton.classList.add("off");
+  });
+
+  audio.addEventListener("play", () => {
+    audioButton.classList.remove("off");
+  });
 });
