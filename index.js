@@ -288,14 +288,32 @@ $(".slider_component").each(function (index) {
 
 $(".team_slider_component").each(function (index) {
   const teamSwiper = new Swiper($(this).find(".swiper")[0], {
-    slidesPerView: 3,
-    spaceBetween: 16,
+    slidesPerView: 1,
+    spaceBetween: 32,
     speed: 800,
     loop: true,
     allowTouchMove: true, // Optional, for touch devices
     //effect: "fade",
     fadeEffect: {
       crossFade: true,
+    },
+    breakpoints: {
+      // when it gets bigger than 478px
+      478: {
+        slidesPerView: 2,
+        spaceBetween: 32,
+      },
+      // when it gets bigger than 768px
+      768: {
+        slidesPerView: 3,
+        spaceBetween: 48,
+      },
+      // when it gets bigger than 991px
+      991: {
+        slidesPerView: 3,
+        //slidesPerGroup: 2,
+        spaceBetween: 64,
+      },
     },
     navigation: {
       nextEl: $(this).find(".swiper-next")[0],
