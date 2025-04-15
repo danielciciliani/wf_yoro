@@ -1,5 +1,3 @@
-console.log("yoro project from index");
-
 document.addEventListener("DOMContentLoaded", () => {
   manageSidebar();
   addActiveClass();
@@ -29,6 +27,14 @@ function addActiveClass() {
           top: targetSection.offsetTop,
           behavior: "smooth",
         });
+
+        if (window.innerWidth <= 768) {
+          const sidebar = document.querySelector(".sidebar_container");
+          const expandArrow = document.getElementById("expand-arrow");
+          sidebar.classList.add("compact");
+          if (expandArrow) expandArrow.classList.remove("show");
+          document.body.classList.remove("no-scroll"); 
+        }
 
         setTimeout(() => {
           isUserClick = false;
@@ -164,13 +170,17 @@ function magnetButton() {
 
 function manageSidebar() {
   const sidebar = document.querySelector(".sidebar_container");
-  const topbarLogoLink = document.querySelector(".topbar_logo_link");
   const backArrow = document.getElementById("back-arrow");
   const expandArrow = document.getElementById("expand-arrow");
   const sidebarLogoMobile = document.querySelector(".sidebar_logo-mobile");
+  const toggleButtonMobile = document.getElementById("mobile-arrow-button");
+
+  function isMobileViewport(){
+    return window.innerWidth <= 768;
+  }
 
   function checkViewport() {
-    const isMobile = window.innerWidth <= 768;
+    const isMobile = isMobileViewport();
 
     if (isMobile) {
       sidebar.classList.add("compact");
@@ -183,37 +193,68 @@ function manageSidebar() {
       if (expandArrow) expandArrow.classList.remove("show");
       if (sidebarLogoMobile) sidebarLogoMobile.classList.remove("active");
     }
+
+    return isMobile;
   }
 
-  function handleLogoClick() {
-    if (!topbarLogoLink) return;
 
-    topbarLogoLink.addEventListener("click", (e) => {
-      e.preventDefault();
-      sidebar.classList.toggle("compact");
-      if (expandArrow) {
-        expandArrow.classList.toggle(
-          "show",
-          !sidebar.classList.contains("compact")
-        );
-      }
-    });
+  function handleToggleButtonMobile() {
+    if (!toggleButtonMobile) return;
+  
+    const isMobile = isMobileViewport();
+  
+    if (isMobile) {
+      toggleButtonMobile.addEventListener("click", (e) => {
+        sidebar.classList.toggle("compact");
+  
+        // 👉 Esta lógica se ejecuta DESPUÉS de hacer toggle
+        if (sidebar.classList.contains("compact")) {
+          document.body.classList.remove("no-scroll");
+        } else {
+          document.body.classList.add("no-scroll");
+        }
+      });
+    }
   }
+  
 
-  function handleSidebarLogoClick() {
-    if (!sidebarLogoMobile) return;
+  // function handleLogoClickOnMobile() {
+  //   if (!topbarLogoLink) return;
+    
+  //   const isMobile = isMobileViewport();
 
-    sidebarLogoMobile.addEventListener("click", (e) => {
-      if (
-        window.innerWidth <= 768 &&
-        sidebarLogoMobile.classList.contains("active")
-      ) {
-        e.preventDefault();
-        sidebar.classList.add("compact");
-        if (expandArrow) expandArrow.classList.add("show");
-      }
-    });
-  }
+  //   if (isMobile) {
+  //     topbarLogoLink.removeAttribute("href");
+  //   }
+
+  //   topbarLogoLink.addEventListener("click", (e) => {
+  //     if (isMobile) {
+  //       e.preventDefault(); 
+  //       sidebar.classList.toggle("compact"); 
+  //       if (expandArrow) {
+  //         expandArrow.classList.toggle(
+  //           "show",
+  //           !sidebar.classList.contains("compact")
+  //         );
+  //       }
+  //     }
+  //   });
+  // }
+
+  // function handleSidebarLogoClick() {
+  //   if (!sidebarLogoMobile) return;
+
+  //   sidebarLogoMobile.addEventListener("click", (e) => {
+  //     if (
+  //       window.innerWidth <= 768 &&
+  //       sidebarLogoMobile.classList.contains("active")
+  //     ) {
+  //       e.preventDefault();
+  //       sidebar.classList.add("compact");
+  //       if (expandArrow) expandArrow.classList.add("show");
+  //     }
+  //   });
+  // }
 
   function handleArrows() {
     if (!backArrow || !expandArrow) return;
@@ -233,8 +274,9 @@ function manageSidebar() {
 
   function init() {
     checkViewport();
-    handleLogoClick();
-    handleSidebarLogoClick();
+    // handleLogoClickOnMobile();
+    // handleSidebarLogoClick();
+    handleToggleButtonMobile();
     handleArrows();
 
     if (expandArrow) {
