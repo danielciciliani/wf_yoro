@@ -181,80 +181,46 @@ function manageSidebar() {
 
   function checkViewport() {
     const isMobile = isMobileViewport();
-
+  
     if (isMobile) {
       sidebar.classList.add("compact");
+      document.body.classList.remove("no-scroll");
+  
       if (sidebarLogoMobile) {
         sidebarLogoMobile.classList.add("active");
         sidebar.style.zIndex = "1100";
       }
     } else {
       sidebar.classList.remove("compact");
+      document.body.classList.remove("no-scroll");
+  
       if (expandArrow) expandArrow.classList.remove("show");
       if (sidebarLogoMobile) sidebarLogoMobile.classList.remove("active");
     }
-
+  
     return isMobile;
   }
-
-
+  
   function handleToggleButtonMobile() {
     if (!toggleButtonMobile) return;
   
-    const isMobile = isMobileViewport();
+    toggleButtonMobile.addEventListener("click", (e) => {
+      const isMobile = isMobileViewport();
+      const arrowIcon = document.querySelector(".mobile_arrow_button-arrow");
   
-    if (isMobile) {
-      toggleButtonMobile.addEventListener("click", (e) => {
-        sidebar.classList.toggle("compact");
+      if (!isMobile) return;
   
-        // 👉 Esta lógica se ejecuta DESPUÉS de hacer toggle
-        if (sidebar.classList.contains("compact")) {
-          document.body.classList.remove("no-scroll");
-        } else {
-          document.body.classList.add("no-scroll");
-        }
-      });
-    }
+      sidebar.classList.toggle("compact");
+  
+      if (sidebar.classList.contains("compact")) {
+        document.body.classList.remove("no-scroll");
+        arrowIcon?.classList.remove("rotated");
+      } else {
+        document.body.classList.add("no-scroll");
+        arrowIcon?.classList.add("rotated");
+      }
+    });
   }
-  
-
-  // function handleLogoClickOnMobile() {
-  //   if (!topbarLogoLink) return;
-    
-  //   const isMobile = isMobileViewport();
-
-  //   if (isMobile) {
-  //     topbarLogoLink.removeAttribute("href");
-  //   }
-
-  //   topbarLogoLink.addEventListener("click", (e) => {
-  //     if (isMobile) {
-  //       e.preventDefault(); 
-  //       sidebar.classList.toggle("compact"); 
-  //       if (expandArrow) {
-  //         expandArrow.classList.toggle(
-  //           "show",
-  //           !sidebar.classList.contains("compact")
-  //         );
-  //       }
-  //     }
-  //   });
-  // }
-
-  // function handleSidebarLogoClick() {
-  //   if (!sidebarLogoMobile) return;
-
-  //   sidebarLogoMobile.addEventListener("click", (e) => {
-  //     if (
-  //       window.innerWidth <= 768 &&
-  //       sidebarLogoMobile.classList.contains("active")
-  //     ) {
-  //       e.preventDefault();
-  //       sidebar.classList.add("compact");
-  //       if (expandArrow) expandArrow.classList.add("show");
-  //     }
-  //   });
-  // }
 
   function handleArrows() {
     if (!backArrow || !expandArrow) return;
@@ -274,8 +240,6 @@ function manageSidebar() {
 
   function init() {
     checkViewport();
-    // handleLogoClickOnMobile();
-    // handleSidebarLogoClick();
     handleToggleButtonMobile();
     handleArrows();
 
