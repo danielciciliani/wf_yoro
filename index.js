@@ -31,8 +31,11 @@ function addActiveClass() {
         if (window.innerWidth <= 768) {
           const sidebar = document.querySelector(".sidebar_container");
           const expandArrow = document.getElementById("expand-arrow");
+          const arrowIcon = document.querySelector(".mobile_arrow_button-arrow"); // 👈 Aseguramos la flecha
+
           sidebar.classList.add("compact");
           if (expandArrow) expandArrow.classList.remove("show");
+          if (arrowIcon) arrowIcon.classList.remove("rotated");
           document.body.classList.remove("no-scroll"); 
         }
 
