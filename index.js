@@ -250,39 +250,49 @@ function manageSidebar() {
 }
 
 ///////// DANIELE
+// $(".slider_component").each(function (index) {
+//   const swiper = new Swiper($(this).find(".swiper")[0], {
+//     slidesPerView: 1,
+//     spaceBetween: 0,
+//     speed: 800,
+//     centerInsufficientSlides: true,
+//     loop: true,
+//     navigation: {
+//       nextEl: $(this).find(".swiper-next")[0],
+//       prevEl: $(this).find(".swiper-prev")[0],
+//     },
+//     pagination: {
+//       el: $(this).find(".swiper-pagination")[0],
+//       type: "bullets",
+//       bulletClass: "swiper-bullet",
+//       bulletActiveClass: "is-active",
+//       bulletElement: "button",
+//       clickable: true,
+//     },
+//   });
+// });
+
 $(".slider_component").each(function (index) {
-  const swiper = new Swiper($(this).find(".swiper")[0], {
-    //effect: "fade",
-    //crossFade: true,
+  const $component = $(this);
+  const swiper = new Swiper($component.find(".swiper")[0], {
     slidesPerView: 1,
     spaceBetween: 0,
     speed: 800,
     centerInsufficientSlides: true,
     loop: true,
-    effect: "fade",
-    fadeEffect: {
-      crossFade: true,
-    },
-    autoplay: {
-      delay: 6000,
-      disableOnInteraction: false,
-    },
-    navigation: {
-      nextEl: $(this).find(".swiper-next")[0],
-      prevEl: $(this).find(".swiper-prev")[0],
-      //disabledClass: "is-disabled",
-    },
     pagination: {
-      el: $(this).find(".swiper-pagination")[0],
+      el: $component.find(".swiper-pagination")[0],
       type: "bullets",
       bulletClass: "swiper-bullet",
       bulletActiveClass: "is-active",
       bulletElement: "button",
       clickable: true,
-      //   renderBullet: function (index, className) {
-      //     return '<span class="' + className + '">' + (index + 1) + "</span>";
-      //   },
     },
+  });
+
+  // 🔥 Button click to go to next slide
+  $component.find(".swiper-slide .swiper-next").on("click", function () {
+    swiper.slideNext();
   });
 });
 
@@ -376,10 +386,10 @@ $("[animate]").each(function (index) {
   createScrollTrigger($(this), tl);
 });
 
-//Audio autoplay and button control
+// Audio autoplay and button control
 window.addEventListener("DOMContentLoaded", () => {
   const audio = document.getElementById("audio");
-  const audioButton = document.querySelector(".audio-button");
+  const audioButtons = document.querySelectorAll(".audio-button");
 
   // Try to play audio on page load (may require user interaction due to browser policies)
   const playAudio = () => {
@@ -390,22 +400,29 @@ window.addEventListener("DOMContentLoaded", () => {
 
   playAudio();
 
-  audioButton.addEventListener("click", () => {
-    if (audio.paused) {
-      audio.play();
-      audioButton.classList.remove("off");
-    } else {
-      audio.pause();
-      audioButton.classList.add("off");
-    }
+  // Sync button states based on audio state
+  const updateButtonStates = () => {
+    audioButtons.forEach((btn) => {
+      if (audio.paused) {
+        btn.classList.add("off");
+      } else {
+        btn.classList.remove("off");
+      }
+    });
+  };
+
+  // Handle click on any audio button
+  audioButtons.forEach((btn) => {
+    btn.addEventListener("click", () => {
+      if (audio.paused) {
+        audio.play();
+      } else {
+        audio.pause();
+      }
+    });
   });
 
-  // Optional: Update button state if autoplay fails
-  audio.addEventListener("pause", () => {
-    audioButton.classList.add("off");
-  });
-
-  audio.addEventListener("play", () => {
-    audioButton.classList.remove("off");
-  });
+  // Update button states when audio state changes
+  audio.addEventListener("pause", updateButtonStates);
+  audio.addEventListener("play", updateButtonStates);
 });
