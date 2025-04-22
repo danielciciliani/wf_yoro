@@ -1,5 +1,3 @@
-console.log("yoro project from index");
-
 document.addEventListener("DOMContentLoaded", () => {
   manageSidebar();
   addActiveClass();
@@ -29,6 +27,17 @@ function addActiveClass() {
           top: targetSection.offsetTop,
           behavior: "smooth",
         });
+
+        if (window.innerWidth <= 768) {
+          const sidebar = document.querySelector(".sidebar_container");
+          const expandArrow = document.getElementById("expand-arrow");
+          const arrowIcon = document.querySelector(".mobile_arrow_button-arrow"); 
+
+          sidebar.classList.add("compact");
+          if (expandArrow) expandArrow.classList.remove("show");
+          if (arrowIcon) arrowIcon.classList.remove("rotated");
+          document.body.classList.remove("no-scroll"); 
+        }
 
         setTimeout(() => {
           isUserClick = false;
@@ -164,53 +173,54 @@ function magnetButton() {
 
 function manageSidebar() {
   const sidebar = document.querySelector(".sidebar_container");
-  const topbarLogoLink = document.querySelector(".topbar_logo_link");
   const backArrow = document.getElementById("back-arrow");
   const expandArrow = document.getElementById("expand-arrow");
   const sidebarLogoMobile = document.querySelector(".sidebar_logo-mobile");
+  const toggleButtonMobile = document.getElementById("mobile-arrow-button");
+
+  function isMobileViewport(){
+    return window.innerWidth <= 768;
+  }
 
   function checkViewport() {
-    const isMobile = window.innerWidth <= 768;
-
+    const isMobile = isMobileViewport();
+  
     if (isMobile) {
       sidebar.classList.add("compact");
+      document.body.classList.remove("no-scroll");
+  
       if (sidebarLogoMobile) {
         sidebarLogoMobile.classList.add("active");
         sidebar.style.zIndex = "1100";
       }
     } else {
       sidebar.classList.remove("compact");
+      document.body.classList.remove("no-scroll");
+  
       if (expandArrow) expandArrow.classList.remove("show");
       if (sidebarLogoMobile) sidebarLogoMobile.classList.remove("active");
     }
+  
+    return isMobile;
   }
-
-  function handleLogoClick() {
-    if (!topbarLogoLink) return;
-
-    topbarLogoLink.addEventListener("click", (e) => {
-      e.preventDefault();
+  
+  function handleToggleButtonMobile() {
+    if (!toggleButtonMobile) return;
+  
+    toggleButtonMobile.addEventListener("click", (e) => {
+      const isMobile = isMobileViewport();
+      const arrowIcon = document.querySelector(".mobile_arrow_button-arrow");
+  
+      if (!isMobile) return;
+  
       sidebar.classList.toggle("compact");
-      if (expandArrow) {
-        expandArrow.classList.toggle(
-          "show",
-          !sidebar.classList.contains("compact")
-        );
-      }
-    });
-  }
-
-  function handleSidebarLogoClick() {
-    if (!sidebarLogoMobile) return;
-
-    sidebarLogoMobile.addEventListener("click", (e) => {
-      if (
-        window.innerWidth <= 768 &&
-        sidebarLogoMobile.classList.contains("active")
-      ) {
-        e.preventDefault();
-        sidebar.classList.add("compact");
-        if (expandArrow) expandArrow.classList.add("show");
+  
+      if (sidebar.classList.contains("compact")) {
+        document.body.classList.remove("no-scroll");
+        arrowIcon?.classList.remove("rotated");
+      } else {
+        document.body.classList.add("no-scroll");
+        arrowIcon?.classList.add("rotated");
       }
     });
   }
@@ -233,8 +243,7 @@ function manageSidebar() {
 
   function init() {
     checkViewport();
-    handleLogoClick();
-    handleSidebarLogoClick();
+    handleToggleButtonMobile();
     handleArrows();
 
     if (expandArrow) {
