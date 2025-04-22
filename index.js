@@ -31,12 +31,14 @@ function addActiveClass() {
         if (window.innerWidth <= 768) {
           const sidebar = document.querySelector(".sidebar_container");
           const expandArrow = document.getElementById("expand-arrow");
-          const arrowIcon = document.querySelector(".mobile_arrow_button-arrow"); 
+          const arrowIcon = document.querySelector(
+            ".mobile_arrow_button-arrow"
+          );
 
           sidebar.classList.add("compact");
           if (expandArrow) expandArrow.classList.remove("show");
           if (arrowIcon) arrowIcon.classList.remove("rotated");
-          document.body.classList.remove("no-scroll"); 
+          document.body.classList.remove("no-scroll");
         }
 
         setTimeout(() => {
@@ -178,17 +180,17 @@ function manageSidebar() {
   const sidebarLogoMobile = document.querySelector(".sidebar_logo-mobile");
   const toggleButtonMobile = document.getElementById("mobile-arrow-button");
 
-  function isMobileViewport(){
+  function isMobileViewport() {
     return window.innerWidth <= 768;
   }
 
   function checkViewport() {
     const isMobile = isMobileViewport();
-  
+
     if (isMobile) {
       sidebar.classList.add("compact");
       document.body.classList.remove("no-scroll");
-  
+
       if (sidebarLogoMobile) {
         sidebarLogoMobile.classList.add("active");
         sidebar.style.zIndex = "1100";
@@ -196,25 +198,25 @@ function manageSidebar() {
     } else {
       sidebar.classList.remove("compact");
       document.body.classList.remove("no-scroll");
-  
+
       if (expandArrow) expandArrow.classList.remove("show");
       if (sidebarLogoMobile) sidebarLogoMobile.classList.remove("active");
     }
-  
+
     return isMobile;
   }
-  
+
   function handleToggleButtonMobile() {
     if (!toggleButtonMobile) return;
-  
+
     toggleButtonMobile.addEventListener("click", (e) => {
       const isMobile = isMobileViewport();
       const arrowIcon = document.querySelector(".mobile_arrow_button-arrow");
-  
+
       if (!isMobile) return;
-  
+
       sidebar.classList.toggle("compact");
-  
+
       if (sidebar.classList.contains("compact")) {
         document.body.classList.remove("no-scroll");
         arrowIcon?.classList.remove("rotated");
@@ -259,27 +261,6 @@ function manageSidebar() {
 }
 
 ///////// DANIELE
-// $(".slider_component").each(function (index) {
-//   const swiper = new Swiper($(this).find(".swiper")[0], {
-//     slidesPerView: 1,
-//     spaceBetween: 0,
-//     speed: 800,
-//     centerInsufficientSlides: true,
-//     loop: true,
-//     navigation: {
-//       nextEl: $(this).find(".swiper-next")[0],
-//       prevEl: $(this).find(".swiper-prev")[0],
-//     },
-//     pagination: {
-//       el: $(this).find(".swiper-pagination")[0],
-//       type: "bullets",
-//       bulletClass: "swiper-bullet",
-//       bulletActiveClass: "is-active",
-//       bulletElement: "button",
-//       clickable: true,
-//     },
-//   });
-// });
 
 $(".slider_component").each(function (index) {
   const $component = $(this);
