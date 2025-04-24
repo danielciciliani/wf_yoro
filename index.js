@@ -228,6 +228,7 @@ function manageSidebar() {
     });
   }
   
+  
 
   function handleArrows() {
     if (!backArrow || !expandArrow) return;
