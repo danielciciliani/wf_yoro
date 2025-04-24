@@ -187,7 +187,7 @@ function manageSidebar() {
 
     if (isMobile) {
       sidebar.classList.add("compact");
-      // document.body.classList.remove("no-scroll");
+      document.body.classList.remove("no-scroll");
 
       if (sidebarLogoMobile) {
         sidebarLogoMobile.classList.add("active");
@@ -195,7 +195,7 @@ function manageSidebar() {
       }
     } else {
       sidebar.classList.remove("compact");
-      // document.body.classList.remove("no-scroll");
+      document.body.classList.remove("no-scroll");
 
       if (expandArrow) expandArrow.classList.remove("show");
       if (sidebarLogoMobile) sidebarLogoMobile.classList.remove("active");
