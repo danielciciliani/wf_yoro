@@ -206,10 +206,10 @@ function manageSidebar() {
 
   function forceNavbarVisible() {
     if (window.innerWidth <= 768 && window.scrollY < 5) {
-      window.scrollTo({ top: 5 , behavior: "smooth"});
+      window.scrollTo({ top: 5 , behavior: "instant"});
       setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: "smooth" });
-      }, 100);
+        window.scrollTo({ top: 0, behavior: "instant"});
+      }, 50);
     }
   }
   
@@ -238,7 +238,7 @@ function manageSidebar() {
         // Esperamos a que el menú esté desplegado
         setTimeout(() => {
           forceNavbarVisible();
-        }, 500); // este delay puede ajustarse si hace falta
+        }, 300); // este delay puede ajustarse si hace falta
       }
     });
   }
