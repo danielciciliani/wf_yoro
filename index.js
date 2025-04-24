@@ -204,16 +204,6 @@ function manageSidebar() {
     return isMobile;
   }
 
-  function forceNavbarVisible() {
-    if (window.innerWidth <= 768 && window.scrollY < 5) {
-      window.scrollTo({ top: 5 , behavior: "instant"});
-      setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: "instant"});
-      }, 50);
-    }
-  }
-  
-
   function handleToggleButtonMobile() {
     if (!toggleButtonMobile) return;
   
@@ -226,24 +216,34 @@ function manageSidebar() {
       sidebar.classList.toggle("compact");
   
       if (sidebar.classList.contains("compact")) {
+        // Sidebar cerrado
         sidebar.style.overflowY = "auto";
+        sidebar.style.height = ""; // Resetea el height dinámico
         document.documentElement.classList.remove("no-scroll");
         document.body.classList.remove("no-scroll");
         arrowIcon?.classList.remove("rotated");
       } else {
+        // Sidebar abierto
+        setSidebarHeight(); // 🔥 acá calculás el height dinámico
         document.documentElement.classList.add("no-scroll");
         document.body.classList.add("no-scroll");
         arrowIcon?.classList.add("rotated");
-  
-        // Esperamos a que el menú esté desplegado
-        setTimeout(() => {
-          forceNavbarVisible();
-        }, 300); // este delay puede ajustarse si hace falta
       }
     });
   }
   
+
+  function setSidebarHeight() {
+    const sidebar = document.querySelector(".sidebar_container");
+    if (!sidebar) return;
   
+    if (window.innerWidth <= 768) {
+      const vh = window.innerHeight;
+      sidebar.style.height = `${vh}px`;
+    } else {
+      sidebar.style.height = "";
+    }
+  }  
 
   function handleArrows() {
     if (!backArrow || !expandArrow) return;
@@ -274,8 +274,18 @@ function manageSidebar() {
     }
   }
 
-  window.addEventListener("load", init);
-  window.addEventListener("resize", setVisibleMobileMenu);
+  window.addEventListener("load", () => {
+    init();
+    setSidebarHeight();
+  });
+  
+  window.addEventListener("resize", () => {
+    setVisibleMobileMenu();
+    setSidebarHeight();
+  });
+  
+  window.addEventListener("orientationchange", setSidebarHeight);
+  
 }
 
 ///////// DANIELE
