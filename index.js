@@ -205,17 +205,14 @@ function manageSidebar() {
   }
 
   function forceNavbarVisible() {
-    if (window.scrollY < 5) {
-      window.scrollTo({
-        top: 5,
-        behavior: "instant" // o "smooth" si querés animarlo
-      });
-  
+    if (window.innerWidth <= 768 && window.scrollY < 5) {
+      window.scrollTo({ top: 5 });
       setTimeout(() => {
-        window.scrollTo({ top: 0, behavior: "instant" });
-      }, 10); // volvemos arriba muy rápido
+        window.scrollTo({ top: 0 });
+      }, 10);
     }
   }
+  
   
 
   function handleToggleButtonMobile() {
@@ -237,11 +234,16 @@ function manageSidebar() {
       } else {
         document.documentElement.classList.add("no-scroll");
         document.body.classList.add("no-scroll");
-        forceNavbarVisible();
         arrowIcon?.classList.add("rotated");
+  
+        // Esperamos a que el menú esté desplegado
+        setTimeout(() => {
+          forceNavbarVisible();
+        }, 100); // este delay puede ajustarse si hace falta
       }
     });
   }
+  
   
 
   function handleArrows() {
