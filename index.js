@@ -82,8 +82,6 @@ function magnetButton() {
     normalScale: 1, // Escala normal
     hoverOpacity: 1.1, // Opacidad al interactuar
     normalOpacity: 1, // Opacidad normal
-    // hoverShadow: '0 0 10px 5px rgba(0, 0, 0, 0.15)', // Sombra al interactuar
-    // normalShadow: '0 0 10px 2px rgba(0, 0, 0, 0.1)',   // Sombra normal
     inDuration: 0.3, // Duración entrada
     outDuration: 0.5, // Duración salida
     perspective: 500, // Perspectiva 3D
@@ -206,27 +204,45 @@ function manageSidebar() {
     return isMobile;
   }
 
+  function forceNavbarVisible() {
+    if (window.scrollY < 5) {
+      window.scrollTo({
+        top: 5,
+        behavior: "instant" // o "smooth" si querés animarlo
+      });
+  
+      setTimeout(() => {
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }, 10); // volvemos arriba muy rápido
+    }
+  }
+  
+
   function handleToggleButtonMobile() {
     if (!toggleButtonMobile) return;
-
+  
     toggleButtonMobile.addEventListener("click", (e) => {
       const isMobile = isMobileViewport();
       const arrowIcon = document.querySelector(".mobile_arrow_button-arrow");
-
+  
       if (!isMobile) return;
-
+  
       sidebar.classList.toggle("compact");
-
+  
       if (sidebar.classList.contains("compact")) {
-        sidebar.style.overflowY = "auto"; // permite scroll interno
-        // document.body.classList.remove("no-scroll"); // <-- evita el overflow hidden en body
+        sidebar.style.overflowY = "auto";
+        document.documentElement.classList.remove("no-scroll");
+        document.body.classList.remove("no-scroll");
         arrowIcon?.classList.remove("rotated");
       } else {
-        // document.body.classList.add("no-scroll");
+        document.documentElement.classList.add("no-scroll");
+        document.body.classList.add("no-scroll");
+        forceNavbarVisible();
         arrowIcon?.classList.add("rotated");
       }
     });
   }
+  
 
   function handleArrows() {
     if (!backArrow || !expandArrow) return;
@@ -245,7 +261,7 @@ function manageSidebar() {
   }
 
   function init() {
-    // checkViewport();
+    checkViewport();
     handleToggleButtonMobile();
     handleArrows();
 
