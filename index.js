@@ -184,12 +184,12 @@ function manageSidebar() {
     return window.innerWidth <= 768;
   }
 
-  function checkViewport() {
+  function setVisibleMobileMenu() {
     const isMobile = isMobileViewport();
 
     if (isMobile) {
       sidebar.classList.add("compact");
-      document.body.classList.remove("no-scroll");
+      // document.body.classList.remove("no-scroll");
 
       if (sidebarLogoMobile) {
         sidebarLogoMobile.classList.add("active");
@@ -197,7 +197,7 @@ function manageSidebar() {
       }
     } else {
       sidebar.classList.remove("compact");
-      document.body.classList.remove("no-scroll");
+      // document.body.classList.remove("no-scroll");
 
       if (expandArrow) expandArrow.classList.remove("show");
       if (sidebarLogoMobile) sidebarLogoMobile.classList.remove("active");
@@ -218,10 +218,11 @@ function manageSidebar() {
       sidebar.classList.toggle("compact");
 
       if (sidebar.classList.contains("compact")) {
-        document.body.classList.remove("no-scroll");
+        sidebar.style.overflowY = "auto"; // permite scroll interno
+        // document.body.classList.remove("no-scroll"); // <-- evita el overflow hidden en body
         arrowIcon?.classList.remove("rotated");
       } else {
-        document.body.classList.add("no-scroll");
+        // document.body.classList.add("no-scroll");
         arrowIcon?.classList.add("rotated");
       }
     });
@@ -244,9 +245,9 @@ function manageSidebar() {
   }
 
   function init() {
-    checkViewport();
-    handleToggleButtonMobile();
-    handleArrows();
+    // checkViewport();
+    // handleToggleButtonMobile();
+    // handleArrows();
 
     if (expandArrow) {
       expandArrow.classList.toggle(
@@ -257,7 +258,7 @@ function manageSidebar() {
   }
 
   window.addEventListener("load", init);
-  window.addEventListener("resize", checkViewport);
+  window.addEventListener("resize", setVisibleMobileMenu);
 }
 
 ///////// DANIELE
