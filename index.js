@@ -245,9 +245,9 @@ function manageSidebar() {
   }
 
   function init() {
-    // checkViewport();
-    // handleToggleButtonMobile();
-    // handleArrows();
+    checkViewport();
+    handleToggleButtonMobile();
+    handleArrows();
 
     if (expandArrow) {
       expandArrow.classList.toggle(
