@@ -261,7 +261,7 @@ function manageSidebar() {
   }
 
   function init() {
-    checkViewport();
+    setVisibleMobileMenu();
     handleToggleButtonMobile();
     handleArrows();
 
