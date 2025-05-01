@@ -360,7 +360,9 @@ ScrollTrigger.matchMedia({
   // Desktop
   "(min-width: 769px)": function () {
     gsap.to(".hero-mask", {
-      scale: 16,
+      width: "1600%",
+      aspectRatio: "3.72",
+      // scale: 16,
       ease: "power2.out",
       transformOrigin: "center center",
       scrollTrigger: {
