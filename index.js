@@ -341,11 +341,11 @@ $(".team_slider_component").each(function (index) {
 gsap.registerPlugin(ScrollTrigger);
 
 gsap.to(".hero-mask", {
-  width: "1600%",
-  height: "448vw",
-  marginLeft: "448vw",
+  // width: "1600%",
+  // height: "448vh",
+  // marginLeft: "448vw",
   //x: "1%",
-  //scale: 8,
+  scale: 16,
   ease: "power2.out",
   scrollTrigger: {
     trigger: ".section_hero",
