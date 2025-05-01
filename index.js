@@ -340,21 +340,55 @@ $(".team_slider_component").each(function (index) {
 //hero mask animation
 gsap.registerPlugin(ScrollTrigger);
 
-gsap.to(".hero-mask", {
-  // width: "1600%",
-  // height: "448vh",
-  // marginLeft: "448vw",
-  //x: "1%",
-  scale: 16,
-  ease: "power2.out",
-  scrollTrigger: {
-    trigger: ".section_hero",
-    start: "top top",
-    //end: "bottom top",
-    end: "150% top",
-    scrub: true,
+// gsap.to(".hero-mask", {
+//   // width: "1600%",
+//   // height: "448vh",
+//   // marginLeft: "448vw",
+//   //x: "1%",
+//   scale: 16,
+//   ease: "power2.out",
+//   scrollTrigger: {
+//     trigger: ".section_hero",
+//     start: "top top",
+//     //end: "bottom top",
+//     end: "150% top",
+//     scrub: true,
+//   },
+// });
+
+ScrollTrigger.matchMedia({
+  // Desktop
+  "(min-width: 769px)": function () {
+    gsap.to(".hero-mask", {
+      scale: 16,
+      ease: "power2.out",
+      transformOrigin: "center center",
+      scrollTrigger: {
+        trigger: ".section_hero",
+        start: "top top",
+        end: "150% top",
+        scrub: true,
+      },
+    });
+  },
+
+  // Mobile
+  "(max-width: 768px)": function () {
+    gsap.to(".hero-mask", {
+      width: "1600%",
+      height: "448vw",
+      marginLeft: "448vw",
+      ease: "power2.out",
+      scrollTrigger: {
+        trigger: ".section_hero",
+        start: "top top",
+        end: "150% top",
+        scrub: true,
+      },
+    });
   },
 });
+
 
 // Split text into spans
 ///////// SCROLLTRIGGER ANIMATION
