@@ -361,7 +361,8 @@ ScrollTrigger.matchMedia({
   "(min-width: 769px)": function () {
     gsap.to(".hero-mask", {
       width: "1600%",
-      aspectRatio: "3.72",
+      height: "448vw",
+      marginLeft: "448vw",
       // scale: 16,
       ease: "power2.out",
       transformOrigin: "center center",
