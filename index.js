@@ -357,71 +357,65 @@ gsap.registerPlugin(ScrollTrigger);
 // });
 
 
-gsap.registerPlugin(ScrollTrigger);
+// gsap.registerPlugin(ScrollTrigger);
 
-const aspectRatio = 1477.47 / 397.19;
-const heroMask = document.querySelector(".hero-mask");
+// const aspectRatio = 1477.47 / 397.19;
+// const heroMask = document.querySelector(".hero-mask");
+
+// ScrollTrigger.create({
+//   trigger: ".section_hero",
+//   start: "top top",
+//   end: "150% top",
+//   scrub: true,
+//   onUpdate: (self) => {
+//     const progress = self.progress;
+
+//     const baseWidth = window.innerWidth;
+//     const maxWidth = baseWidth * 16; // equivalente a 1600%
+
+//     const currentWidth = baseWidth + (maxWidth - baseWidth) * progress;
+
+//     const currentHeight = currentWidth / aspectRatio;
+
+//     const maxMarginLeft = baseWidth * 4.48;
+//     const currentMarginLeft = maxMarginLeft * progress;
+
+//     heroMask.style.width = `${currentWidth}px`;
+//     heroMask.style.height = `${currentHeight}px`;
+//     heroMask.style.marginLeft = `${currentMarginLeft}px`;
+//   },
+// });
+
+function updateHeroMask(progress = ScrollTrigger.getById("heroMaskAnim")?.progress || 0) {
+  const aspectRatio = 1477.47 / 397.19;
+  const baseWidth = window.innerWidth;
+  const maxWidth = baseWidth * 16;
+  const currentWidth = baseWidth + (maxWidth - baseWidth) * progress;
+  const currentHeight = currentWidth / aspectRatio;
+  const maxMarginLeft = baseWidth * 4.48;
+  const currentMarginLeft = maxMarginLeft * progress;
+
+  const heroMask = document.querySelector(".hero-mask");
+  heroMask.style.width = `${currentWidth}px`;
+  heroMask.style.height = `${currentHeight}px`;
+  heroMask.style.marginLeft = `${currentMarginLeft}px`;
+}
+
+window.addEventListener("load", () => updateHeroMask());
+window.addEventListener("resize", () => updateHeroMask());
 
 ScrollTrigger.create({
+  id: "heroMaskAnim",
   trigger: ".section_hero",
   start: "top top",
   end: "150% top",
   scrub: true,
-  onUpdate: (self) => {
-    const progress = self.progress;
-
-    const baseWidth = window.innerWidth;
-    const maxWidth = baseWidth * 16; // equivalente a 1600%
-
-    const currentWidth = baseWidth + (maxWidth - baseWidth) * progress;
-
-    const currentHeight = currentWidth / aspectRatio;
-
-    const maxMarginLeft = baseWidth * 4.48;
-    const currentMarginLeft = maxMarginLeft * progress;
-
-    heroMask.style.width = `${currentWidth}px`;
-    heroMask.style.height = `${currentHeight}px`;
-    heroMask.style.marginLeft = `${currentMarginLeft}px`;
-  },
+  onUpdate: (self) => updateHeroMask(self.progress),
 });
 
 
-// ScrollTrigger.matchMedia({
-//   // Desktop
-//   "(min-width: 769px)": function () {
-//     gsap.to(".hero-mask", {
-//       width: "1600%",
-//       height: "448vw",
-//       marginLeft: "448vw",
-//       // scale: 16,
-//       ease: "power2.out",
-//       transformOrigin: "center center",
-//       scrollTrigger: {
-//         trigger: ".section_hero",
-//         start: "top top",
-//         end: "150% top",
-//         scrub: true,
-//       },
-//     });
-//   },
 
-//   // Mobile
-//   "(max-width: 768px)": function () {
-//     gsap.to(".hero-mask", {
-//       width: "1600%",
-//       height: "448vw",
-//       marginLeft: "448vw",
-//       ease: "power2.out",
-//       scrollTrigger: {
-//         trigger: ".section_hero",
-//         start: "top top",
-//         end: "150% top",
-//         scrub: true,
-//       },
-//     });
-//   },
-// });
+
 
 
 // Split text into spans
