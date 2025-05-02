@@ -386,34 +386,86 @@ gsap.registerPlugin(ScrollTrigger);
 //   },
 // });
 
-function updateHeroMask(progress = ScrollTrigger.getById("heroMaskAnim")?.progress || 0) {
-  const aspectRatio = 1477.47 / 397.19;
-  const baseWidth = window.innerWidth;
-  const maxWidth = baseWidth * 16;
-  const currentWidth = baseWidth + (maxWidth - baseWidth) * progress;
-  const currentHeight = currentWidth / aspectRatio;
-  const maxMarginLeft = baseWidth * 4.48;
-  const currentMarginLeft = maxMarginLeft * progress;
 
-  const heroMask = document.querySelector(".hero-mask");
-  heroMask.style.width = `${currentWidth}px`;
-  heroMask.style.height = `${currentHeight}px`;
-  heroMask.style.marginLeft = `${currentMarginLeft}px`;
+ // codigo que funciona en desktop, pero no en mobile:
+
+// function updateHeroMask(progress = ScrollTrigger.getById("heroMaskAnim")?.progress || 0) {
+//   const aspectRatio = 1477.47 / 397.19;
+//   const baseWidth = window.innerWidth;
+//   const maxWidth = baseWidth * 16;
+//   const currentWidth = baseWidth + (maxWidth - baseWidth) * progress;
+//   const currentHeight = currentWidth / aspectRatio;
+//   const maxMarginLeft = baseWidth * 4.48;
+//   const currentMarginLeft = maxMarginLeft * progress;
+
+//   const heroMask = document.querySelector(".hero-mask");
+//   heroMask.style.width = `${currentWidth}px`;
+//   heroMask.style.height = `${currentHeight}px`;
+//   heroMask.style.marginLeft = `${currentMarginLeft}px`;
+// }
+
+// window.addEventListener("load", () => updateHeroMask());
+// window.addEventListener("resize", () => updateHeroMask());
+
+// ScrollTrigger.create({
+//   id: "heroMaskAnim",
+//   trigger: ".section_hero",
+//   start: "top top",
+//   end: "150% top",
+//   scrub: true,
+//   onUpdate: (self) => updateHeroMask(self.progress),
+// });
+
+
+
+
+// codigo para probar dejar el funcionamiento mobile como antes, y el nuevo para desktop:
+
+const isMobile = window.matchMedia("(max-width: 768px)").matches;
+
+if (isMobile) {
+  // En mobile: usar el comportamiento anterior
+  gsap.to(".hero-mask", {
+    width: "1600%",
+    height: "448vw",
+    marginLeft: "448vw",
+    ease: "power2.out",
+    scrollTrigger: {
+      trigger: ".section_hero",
+      start: "top top",
+      end: "150% top",
+      scrub: true,
+    },
+  });
+} else {
+  // En desktop: usar el comportamiento más preciso con proporción
+  function updateHeroMask(progress = ScrollTrigger.getById("heroMaskAnim")?.progress || 0) {
+    const aspectRatio = 1477.47 / 397.19;
+    const baseWidth = window.innerWidth;
+    const maxWidth = baseWidth * 16;
+    const currentWidth = baseWidth + (maxWidth - baseWidth) * progress;
+    const currentHeight = currentWidth / aspectRatio;
+    const maxMarginLeft = baseWidth * 4.48;
+    const currentMarginLeft = maxMarginLeft * progress;
+
+    const heroMask = document.querySelector(".hero-mask");
+    heroMask.style.width = `${currentWidth}px`;
+    heroMask.style.height = `${currentHeight}px`;
+    heroMask.style.marginLeft = `${currentMarginLeft}px`;
+  }
+
+  window.addEventListener("load", () => updateHeroMask());
+  window.addEventListener("resize", () => updateHeroMask());
+
+  ScrollTrigger.create({
+    id: "heroMaskAnim",
+    trigger: ".section_hero",
+    start: "top top",
+    end: "150% top",
+    scrub: true,
+    onUpdate: (self) => updateHeroMask(self.progress),
+  });
 }
-
-window.addEventListener("load", () => updateHeroMask());
-window.addEventListener("resize", () => updateHeroMask());
-
-ScrollTrigger.create({
-  id: "heroMaskAnim",
-  trigger: ".section_hero",
-  start: "top top",
-  end: "150% top",
-  scrub: true,
-  onUpdate: (self) => updateHeroMask(self.progress),
-});
-
-
 
 
 
