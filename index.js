@@ -206,15 +206,15 @@ function manageSidebar() {
 
   function handleToggleButtonMobile() {
     if (!toggleButtonMobile) return;
-  
+
     toggleButtonMobile.addEventListener("click", (e) => {
       const isMobile = isMobileViewport();
       const arrowIcon = document.querySelector(".mobile_arrow_button-arrow");
-  
+
       if (!isMobile) return;
-  
+
       sidebar.classList.toggle("compact");
-  
+
       if (sidebar.classList.contains("compact")) {
         sidebar.style.overflowY = "auto";
         document.documentElement.classList.remove("no-scroll");
@@ -231,7 +231,7 @@ function manageSidebar() {
   function setSidebarHeight() {
     const sidebar = document.querySelector(".sidebar_container");
     if (!sidebar) return;
-  
+
     // Solo lo hacemos en mobile
     if (window.innerWidth <= 768) {
       const vh = window.innerHeight;
@@ -240,7 +240,7 @@ function manageSidebar() {
       // Reset height en desktop
       sidebar.style.height = "";
     }
-  }  
+  }
 
   function handleArrows() {
     if (!backArrow || !expandArrow) return;
@@ -303,7 +303,7 @@ $(".slider_component").each(function (index) {
 
 $(".team_slider_component").each(function (index) {
   const teamSwiper = new Swiper($(this).find(".swiper")[0], {
-    slidesPerView: 1,
+    slidesPerView: 1.2,
     spaceBetween: 32,
     speed: 800,
     loop: true,
@@ -356,7 +356,6 @@ gsap.registerPlugin(ScrollTrigger);
 //   },
 // });
 
-
 // gsap.registerPlugin(ScrollTrigger);
 
 // const aspectRatio = 1477.47 / 397.19;
@@ -386,8 +385,7 @@ gsap.registerPlugin(ScrollTrigger);
 //   },
 // });
 
-
- // codigo que funciona en desktop, pero no en mobile:
+// codigo que funciona en desktop, pero no en mobile:
 
 // function updateHeroMask(progress = ScrollTrigger.getById("heroMaskAnim")?.progress || 0) {
 //   const aspectRatio = 1477.47 / 397.19;
@@ -416,9 +414,6 @@ gsap.registerPlugin(ScrollTrigger);
 //   onUpdate: (self) => updateHeroMask(self.progress),
 // });
 
-
-
-
 // codigo para probar dejar el funcionamiento mobile como antes, y el nuevo para desktop:
 
 const isMobile = window.matchMedia("(max-width: 768px)").matches;
@@ -439,7 +434,9 @@ if (isMobile) {
   });
 } else {
   // En desktop: usar el comportamiento más preciso con proporción
-  function updateHeroMask(progress = ScrollTrigger.getById("heroMaskAnim")?.progress || 0) {
+  function updateHeroMask(
+    progress = ScrollTrigger.getById("heroMaskAnim")?.progress || 0
+  ) {
     const aspectRatio = 1477.47 / 397.19;
     const baseWidth = window.innerWidth;
     const maxWidth = baseWidth * 16;
@@ -466,9 +463,6 @@ if (isMobile) {
     onUpdate: (self) => updateHeroMask(self.progress),
   });
 }
-
-
-
 
 // Split text into spans
 ///////// SCROLLTRIGGER ANIMATION
